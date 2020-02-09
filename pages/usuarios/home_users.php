@@ -78,7 +78,7 @@
                         </div>
                         <div class="d-flex flex-column bd-highlight mb-3">
                             <div class="d-flex justify-content-end">
-                                <a href="gerencia_cliente.php" class="btn btn-success">Cadastrar +</a>
+                                <a href="gerencia_users.php" class="btn btn-success">Cadastrar +</a>
                             </div>
                         </div>
                     </div>

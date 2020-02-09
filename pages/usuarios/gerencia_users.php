@@ -52,13 +52,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="home_clientes.php" class="nav-link active">
+                            <a href="home_clientes.php" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>Clientes</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../usuarios/home_users.php" class="nav-link">
+                            <a href="../usuarios/home_users.php" class="nav-link active">
                                 <i class="nav-icon fas fa-user-friends"></i>
                                 <p>Usuários</p>
                             </a>
@@ -73,7 +73,7 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Cadastrar Cliente</h1>
+                                <h1 class="m-0 text-dark">Cadastrar Usuário</h1>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                 <section class="content">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Cadastro Cliente</h3>
+                            <h3 class="card-title">Cadastro Usuário</h3>
                         </div>
                         <div class="card-body">
                             <form action="" method="POST">
@@ -91,81 +91,22 @@
                                     <input type="text" id="campo_nome" name="nome" class="form-control" placeholder="Nome" required>
                                 </div>
                                 
-                                <label for="campo_cpf">CPF*</label>
+                                <label for="campo_user">Usuário*</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-address-card"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control frm_number_only" id="campo_cpf" name="cpf" onkeypress="formata_mascara(this, '###.###.###-##', event)" minlength="14" maxlength="14" placeholder="CPF" required>
+                                    <input type="text" class="form-control" id="campo_user" name="user" placeholder="Usuário" required>
                                 </div>
 
-                                <label for="campo_telefone">Telefone</label>
+                                <label for="campo_senha">Senha*</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
                                     </div>
-                                    <input type="tel" name="campo_telefone" id="telefone" onkeypress="formata_mascara(this, '## #####-####', event)" minlength="13" maxlength="13" class="frm_number_only form-control" placeholder="Telefone" required>
+                                    <input type="password" class="form-control" id="campo_senha" name="senha" placeholder="Senha" required>
                                 </div>
 
-                                <label for="campo_site">Site</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-globe"></i></span>
-                                    </div>
-                                    <input type="url" id="campo_site" name="site" class="form-control" placeholder="Site">
-                                </div>
-
-                                <label for="campo_email">Email</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    </div>
-                                    <input type="email" id="campo_email" name="email" class="form-control" placeholder="Email">
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-2">
-                                        <label for="cep">CEP</label>
-                                        <div class="input-group mb-3">
-                                            <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" class="form-control frm_number_only" onblur="pesquisacep(this.value);" placeholder="CEP">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-8">
-                                        <label for="rua">Rua</label>
-                                        <div class="input-group mb-3">
-                                        <input name="rua" type="text" id="rua" size="60" class="form-control" placeholder="Rua">
-                                        </div>    
-                                    </div>
-                                    
-                                    <div class="col-sm-2">
-                                        <label for="num">Número</label>
-                                        <div class="input-group mb-3">
-                                            <input name="num_casa" type="text" id="num" class="form-control frm_number_only" placeholder="Número">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <label for="bairro">Bairro</label>
-                                        <div class="input-group mb-3">
-                                            <input name="bairro" type="text" id="bairro" size="40" class="form-control" placeholder="Bairro">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="cidade">Cidade</label>
-                                        <div class="input-group mb-3">
-                                            <input name="cidade" type="text" id="cidade" size="40" class="form-control" placeholder="Cidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="estado">Estado</label>
-                                        <div class="input-group mb-3">
-                                            <input name="uf" type="text" id="uf" size="2" class="form-control" placeholder="Estado">
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="buttons">
                                     <button type="submit" class="btn btn-success">Cadastrar</button>
                                     <button type="reset" class="btn btn-info">Limpar</button>
