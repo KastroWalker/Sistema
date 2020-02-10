@@ -25,24 +25,45 @@
 			$this->data->setLogin($login);
 			$this->data->setSenha($senha);
 
-			$sql = "INSERT INTO usuario (nome, login, senha) VALUES (:nome, :login, :senha);";
+			$sql = "SELECT COUNT(*) FROM usuario WHERE login = :login";
+		    $d = $this->connection->connect();
+		    $dados = $d->prepare($sql);
+		    $dados->bindValue(":login", $this->data->getLogin());
 
-			$d = $this->connection->connect();
+		    try {
+		    	$dados->execute();
 
-			$data = $d->prepare($sql);
-			$data->bindValue(":nome", $this->data->getNome());
-			$data->bindValue(":login", $this->data->getLogin());
-			$data->bindValue(":senha", $this->data->getSenha());
+			    $user = $dados->fetchColumn();
 
-			try {
-				$data->execute();
-				$_SESSION['usuario_cadastrado'] = true;
-				echo "<script>window.location.href = 'home_users.php';</script>";
-			} catch (PDOException $ex) {
-				echo "Erro ao cadastrar: ".$ex->getMessage();
+			    if($user == 0){
+			    	$sql = "INSERT INTO usuario (nome, login, senha) VALUES (:nome, :login, :senha);";
+
+					$d = $this->connection->connect();
+
+					$data = $d->prepare($sql);
+					$data->bindValue(":nome", $this->data->getNome());
+					$data->bindValue(":login", $this->data->getLogin());
+					$data->bindValue(":senha", $this->data->getSenha());
+
+					try {
+						$data->execute();
+						$_SESSION['usuario_cadastrado'] = true;
+						echo "<script>window.location.href = 'home_users.php';</script>";
+					} catch (PDOException $ex) {
+						echo "Erro ao cadastrar: ".$ex->getMessage();
+						$_SESSION['usuario_nao_cadastrado'] = true;
+						echo "<script>window.location.href = 'home_users.php';</script>";
+					}
+			    }else{
+			    	$_SESSION['ja_cadastrado'] = true;
+			    }
+		    } catch (PDOException $ex) {
+		    	echo "Erro ao cadastrar: ".$ex->getMessage();
 				$_SESSION['usuario_nao_cadastrado'] = true;
 				echo "<script>window.location.href = 'home_users.php';</script>";
-			}
+		    }
+		    
+			
 		}
 		
 		function read($id){

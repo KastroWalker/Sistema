@@ -19,6 +19,19 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     </head>
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
+        <?php 
+            if(isset($_POST['btn-cadastrar'])){
+                $nome = $_POST['nome'];
+                $login = $_POST['user'];
+                $senha = $_POST['senha'];
+    
+                $user->create($nome, $login, $senha);
+            }
+
+            
+         ?>
+
         <div class="wrapper">
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">
                 <ul class="navbar-nav">
@@ -52,7 +65,7 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <li class="nav-item">
-                                <a href="../index.php" class="nav-link">
+                                <a href="../home.php" class="nav-link">
                                     <i class="nav-icon fas fa-home"></i>
                                     <p>Home</p>
                                 </a>
@@ -91,6 +104,15 @@
                             <h3 class="card-title">Cadastro Usuário</h3>
                         </div>
                         <div class="card-body">
+                            <?php
+                                if(isset($_SESSION['ja_cadastrado'])){
+                                    echo "
+                                        <div class='alert alert-danger' role='alert'>
+                                            O usuário já esta em uso.
+                                        </div>";
+                                    unset($_SESSION['ja_cadastrado']);
+                                }
+                            ?>
                             <form action="" method="POST">
                                 <input type="hidden" id="campo_id" name="id">
 
@@ -129,43 +151,6 @@
                                 <p><strong>Os Campos com * são obrigatório.</strong></p>
                             </div>
                         </div>
-                <?php 
-                    if(isset($_GET['id'])){
-                        $id = $_GET['id'];
-                        $dados = $user->read($id);
-                        
-                        foreach ($dados as $d) {
-                            echo "<script>";
-                            echo "document.getElementById('campo_id').value = '".$d['id']."';";
-                            echo "document.getElementById('campo_nome').value = '".$d['nome']."';";
-                            echo "document.getElementById('campo_user').value = '".$d['login']."';";
-                            echo "document.getElementById('campo_senha').value = '".$d['senha']."';";
-                            echo "</script>";
-                        }
-                    }
-
-                    if(isset($_POST['btn-cadastrar'])){
-                        $nome = $_POST['nome'];
-                        $login = $_POST['user'];
-                        $senha = $_POST['senha'];
-            
-                        $user->create($nome, $login, $senha);
-                    }
-
-                    if(isset($_POST['delete_id'])){
-                        $id = $_POST['delete_id'];
-                        $user->delete($id);
-                    }
-
-                    if(isset($_POST['btn-editar'])){
-                        $id = $_POST['id'];
-                        $nome = $_POST['nome'];
-                        $login = $_POST['user'];
-                        $senha = $_POST['senha'];
-
-                        $user->edit($id, $nome, $login, $senha);
-                    }
-                 ?>
                     </div>
                 </section>
             </div>
@@ -173,6 +158,35 @@
                 <strong>Copyright &copy; 2020 <a href="https://kastrowalker.github.io/" target="_blank">KastroWalker</a>.</strong>
                 Todos os Direitos Reservados
             </footer>
+            <?php 
+                if(isset($_POST['delete_id'])){
+                    $id = $_POST['delete_id'];
+                    $user->delete($id);
+                }
+
+                if(isset($_POST['btn-editar'])){
+                    $id = $_POST['id'];
+                    $nome = $_POST['nome'];
+                    $login = $_POST['user'];
+                    $senha = $_POST['senha'];
+
+                    $user->edit($id, $nome, $login, $senha);
+                }
+
+                if(isset($_GET['id'])){
+                    $id = $_GET['id'];
+                    $dados = $user->read($id);
+                    
+                    foreach ($dados as $d) {
+                        echo "<script>";
+                        echo "document.getElementById('campo_id').value = '".$d['id']."';";
+                        echo "document.getElementById('campo_nome').value = '".$d['nome']."';";
+                        echo "document.getElementById('campo_user').value = '".$d['login']."';";
+                        echo "document.getElementById('campo_senha').value = '".$d['senha']."';";
+                        echo "</script>";
+                    }
+                }
+            ?>
         </div>
         
         <script src="../../plugins/jquery/jquery.min.js"></script>
