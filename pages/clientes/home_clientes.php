@@ -132,7 +132,7 @@
                     <?php 
                         if(isset($_SESSION['cliente_nao_cadastrado'])){
                             msg("Ocorreu um erro e não foi possivel cadastrar o cliente!", "danger");
-                            unset($_SESSION['cliente_nao_editado']);
+                            unset($_SESSION['cliente_nao_cadastrado']);
                         } else if(isset($_SESSION['cliente_nao_cadastrado'])){
                             msg("Ocorreu um erro e não foi possivel editar o cliente!", "danger");
                             unset($_SESSION['cliente_nao_editado']);
@@ -228,6 +228,6 @@
 </html>
 <?php 
     }else{
-        header('Location: ../index.php');
+        header('Location: ../../index.php');
     }
 ?>
