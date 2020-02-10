@@ -31,7 +31,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="../Control/Logout.php">Sair</a>
+                        <a class="nav-link" href="../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>

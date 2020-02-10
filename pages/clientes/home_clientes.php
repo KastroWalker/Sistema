@@ -29,6 +29,7 @@
     </head>
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
         
+        <!-- Modal de deletar Cliente -->
         <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -65,7 +66,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="../Control/Logout.php">Sair</a>
+                        <a class="nav-link" href="../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>

@@ -103,7 +103,7 @@
 				echo "<script>window.location.href = 'home_users.php';</script>";
 	        } catch (PDOException $ex) {
 	            echo "Erro ao apagar: " . $ex->getMessage();
-	            $_SESSION['cliente_nao_apagado'] = true;
+	            $_SESSION['usuario_nao_apagado'] = true;
 				echo "<script>window.location.href = 'home_users.php';</script>";
 	        }
 	    }	

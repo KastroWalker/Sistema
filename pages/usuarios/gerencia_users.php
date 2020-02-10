@@ -32,7 +32,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="../Control/Logout.php">Sair</a>
+                        <a class="nav-link" href="../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>
@@ -92,6 +92,8 @@
                         </div>
                         <div class="card-body">
                             <form action="" method="POST">
+                                <input type="hidden" id="campo_id" name="id">
+
                                 <label for="campo_nome">Nome*</label>
                                 <div class="input-group mb-3">
                                     <input type="text" id="campo_nome" name="nome" class="form-control" placeholder="Nome" required>
@@ -128,12 +130,40 @@
                             </div>
                         </div>
                 <?php 
+                    if(isset($_GET['id'])){
+                        $id = $_GET['id'];
+                        $dados = $user->read($id);
+                        
+                        foreach ($dados as $d) {
+                            echo "<script>";
+                            echo "document.getElementById('campo_id').value = '".$d['id']."';";
+                            echo "document.getElementById('campo_nome').value = '".$d['nome']."';";
+                            echo "document.getElementById('campo_user').value = '".$d['login']."';";
+                            echo "document.getElementById('campo_senha').value = '".$d['senha']."';";
+                            echo "</script>";
+                        }
+                    }
+
                     if(isset($_POST['btn-cadastrar'])){
                         $nome = $_POST['nome'];
                         $login = $_POST['user'];
                         $senha = $_POST['senha'];
             
                         $user->create($nome, $login, $senha);
+                    }
+
+                    if(isset($_POST['delete_id'])){
+                        $id = $_POST['delete_id'];
+                        $user->delete($id);
+                    }
+
+                    if(isset($_POST['btn-editar'])){
+                        $id = $_POST['id'];
+                        $nome = $_POST['nome'];
+                        $login = $_POST['user'];
+                        $senha = $_POST['senha'];
+
+                        $user->edit($id, $nome, $login, $senha);
                     }
                  ?>
                     </div>

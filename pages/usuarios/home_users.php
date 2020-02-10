@@ -1,5 +1,16 @@
-<?php 
-    session_start();
+<?php
+    include_once '../../Control/Usuario_Control.php';
+    $user = new Usuario_Control();
+    $dados = $user->VerUsuarios();
+
+    function msg($msg, $type){
+        echo "
+            <div class='alert alert-$type' role='alert'>
+                $msg
+            </div>
+        ";
+    }
+
     if (isset($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
@@ -17,6 +28,31 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     </head>
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
+        <!-- Modal de deletar Usuario -->
+        <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Apagar Usuário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="gerencia_users.php" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="delete_id" id="delete_id">
+                            <h4> Você tem certeza que deseja apagar esse Usuário? </h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> Não </button>
+                            <button type="submit" name="deletedata" class="btn btn-danger"> Sim, deletar!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="wrapper">
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">
                 <ul class="navbar-nav">
@@ -89,6 +125,27 @@
                 </div>
 
                 <section class="content">
+                    <?php 
+                        if(isset($_SESSION['usuario_nao_cadastrado'])){
+                            msg("Ocorreu um erro e não foi possivel cadastrar o usuário!", "danger");
+                            unset($_SESSION['usuario_nao_editado']);
+                        } else if(isset($_SESSION['usuario_nao_cadastrado'])){
+                            msg("Ocorreu um erro e não foi possivel editar o usuário!", "danger");
+                            unset($_SESSION['usuario_nao_editado']);
+                        } else if(isset($_SESSION['usuario_nao_apagado'])){
+                            msg("Ocorreu um erro e não foi possivel apagar o usuário!", "danger");
+                            unset($_SESSION['usuario_nao_apagado']);
+                        } else if(isset($_SESSION['usuario_cadastrado'])){
+                            msg("Usuário Cadastrado Sucesso!", "success");
+                            unset($_SESSION['usuario_cadastrado']);
+                        } else if(isset($_SESSION['usuario_editado'])){
+                            msg("Usuário Editado Com Sucesso!", "success");
+                            unset($_SESSION['usuario_editado']);
+                        } else if(isset($_SESSION['usuario_apagado'])){
+                            msg("Usuário Excluido Sucesso!", "success");
+                            unset($_SESSION['usuario_apagado']);
+                        }
+                     ?>
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-header">
@@ -106,17 +163,23 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>1</td>
-                                            <td>Victor</td>
-                                            <td>kastrowalker</td>
-                                            <td>
-                                                <a href="" class="btn btn-info">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="" class="btn btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
+                                            <?php 
+                                                foreach ($dados as $d) {
+                                                    echo "<tr>";
+                                                    echo "<td>".$d['id']."</td>";
+                                                    echo "<td>".$d['nome']."</td>";
+                                                    echo "<td>".$d['login']."</td>";
+                                                    echo "<td>";
+                                                    echo "<a href='gerencia_users.php?id=".$d['id']."' class='btn btn-info'>
+                                                        <i class='fas fa-edit'></i>
+                                                    </a>";
+                                                    echo "<a class='btn btn-danger  btn-delete'>
+                                                        <i class='fas fa-trash'></i>
+                                                    </a>";
+                                                    echo "</td>";
+                                                    echo "</tr>";
+                                                }
+                                            ?>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -137,6 +200,23 @@
         <script src="../../dist/js/adminlte.js"></script>
         <script src="../../dist/js/demo.js"></script>
         <script src="../../dist/js/pages/dashboard2.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('.btn-delete').on('click', function(){
+                $('#deletemodal').modal('show');  
+                
+                $tr = $(this).closest('tr');
+
+                var data = $tr.children("td").map(function(){
+                    return $(this).text();
+                }).get();
+
+                console.log(data);  
+                document.getElementById("delete_id").value = data[0];
+                });
+            });
+        </script>
     </body>
 </html>
 <?php 

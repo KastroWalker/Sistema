@@ -1,5 +1,23 @@
 <?php 
     session_start();
+
+    include_once '../DB/Conexao.php';
+
+    $connection = new Conexao();
+
+    $sql = "SELECT COUNT(*) FROM cliente";
+    $d = $connection->connect();
+    $dados = $d->prepare($sql);
+    $dados->execute();
+
+    $cliente = $dados->fetchColumn();
+
+    $sql = "SELECT COUNT(*) FROM usuario";
+    $d = $connection->connect();
+    $dados = $d->prepare($sql);
+    $dados->execute();
+
+    $user = $dados->fetchColumn();
     if (isset($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
@@ -31,7 +49,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="../Control/Logout.php">Sair</a>
+                        <a class="nav-link" href="../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>
@@ -51,7 +69,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link  active">
+                            <a href="home.php" class="nav-link  active">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Home</p>
                             </a>
@@ -89,19 +107,19 @@
                         <div class="row">
                             <div class="col-12 col-sm-6 col-md-3">
                                 <div class="info-box mb-3">
-                                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
+                                    <span class="info-box-icon bg-success elevation-1"><a href="clientes/home_clientes.php"><i class="fas fa-users"></i></a></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Clientes</span>
-                                        <span class="info-box-number">760</span>
+                                        <span class="info-box-number"><?php echo $cliente; ?></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6 col-md-3">
                                 <div class="info-box mb-3">
-                                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                                    <span class="info-box-icon bg-warning elevation-1"><a href="usuarios/home_users.php"><i class="fas fa-users"></i></a></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Usuários</span>
-                                        <span class="info-box-number">2,000</span>
+                                        <span class="info-box-number"><?php echo $user; ?></span>
                                     </div>
                                 </div>
                             </div>
