@@ -39,26 +39,30 @@
                         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="../index.php" class="nav-link">Home</a>
+                        <a href="../home.php" class="nav-link">Home</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../Control/Logout.php">Sair</a>
+                        <a class="nav-link" href="../../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>
 
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <a href="index.html" class="brand-link">
+                    <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">Minha Empresa</span>
                 </a>
 
                 <div class="sidebar">
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="../../dist/img/icon_user.png" class="img-circle elevation-2" alt="User Image">
+                        </div>
                         <div class="info">
-                            <a href="#" class="d-block">Alexander Pierce</a>
+                            <a href="../home.php" class="d-block"><?php echo $_SESSION['nome_user']; ?></a>
                         </div>
                     </div>
 
