@@ -1,5 +1,16 @@
 <?php 
-    session_start();
+    include_once '../../Control/Cliente_Control.php';
+    $cliente = new Cliente_Control();
+    $dados = $cliente->VerClientes();
+    
+    function msg($msg, $type){
+        echo "
+            <div class='alert alert-$type' role='alert'>
+                $msg
+            </div>
+        ";
+    }
+
     if (isset($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
@@ -17,6 +28,30 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     </head>
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+        
+        <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Apagar Cliente</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="gerencia_cliente.php" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="delete_id" id="delete_id">
+                            <h4> Você tem certeza que deseja apagar esse Cliente? </h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> Não </button>
+                            <button type="submit" name="deletedata" class="btn btn-danger"> Sim, deletar!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="wrapper">
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">
                 <ul class="navbar-nav">
@@ -30,7 +65,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">Sair</a>
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>
@@ -89,6 +124,28 @@
                 </div>
 
                 <section class="content">
+                    <?php 
+                        if(isset($_SESSION['cliente_nao_cadastrado'])){
+                            msg("Ocorreu um erro e não foi possivel cadastrar o cliente!", "danger");
+                            unset($_SESSION['cliente_nao_editado']);
+                        } else if(isset($_SESSION['cliente_nao_cadastrado'])){
+                            msg("Ocorreu um erro e não foi possivel editar o cliente!", "danger");
+                            unset($_SESSION['cliente_nao_editado']);
+                        } else if(isset($_SESSION['cliente_nao_apagado'])){
+                            msg("Ocorreu um erro e não foi possivel apagar o cliente!", "danger");
+                            unset($_SESSION['cliente_nao_apagado']);
+                        } else if(isset($_SESSION['cliente_cadastrado'])){
+                            msg("Cliente Cadastrado Sucesso!", "success");
+                            unset($_SESSION['cliente_cadastrado']);
+                        } else if(isset($_SESSION['cliente_editado'])){
+                            msg("Cliente Editado Com Sucesso!", "success");
+                            unset($_SESSION['cliente_editado']);
+                        } else if(isset($_SESSION['cliente_apagado'])){
+                            msg("Cliente Excluido Sucesso!", "success");
+                            unset($_SESSION['cliente_apagado']);
+                        }
+                     ?>
+
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-header">
@@ -107,21 +164,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Victor</td>
-                                            <td>Parnaíba</td>
-                                            <td>PI</td>
-                                            <td>victorcsa2002@gmail.com</td>
-                                            <td>
-                                                <a href="" class="btn btn-info">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="" class="btn btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <?php 
+                                            foreach ($dados as $d) {
+                                                echo "<tr>";
+                                                echo "<td>".$d['id']."</td>";
+                                                echo "<td>".$d['nome']."</td>";
+                                                echo "<td>".$d['cidade']."</td>";
+                                                echo "<td>".$d['uf']."</td>";
+                                                echo "<td>".$d['email']."</td>";
+                                                echo "<td>";
+                                                echo "<a href='gerencia_cliente.php?id=".$d['id']."' class='btn btn-info'>
+                                                    <i class='fas fa-edit'></i>
+                                                </a>";
+                                                echo "<a class='btn btn-danger  btn-delete'>
+                                                    <i class='fas fa-trash'></i>
+                                                </a>";
+                                                echo "</td>";
+                                                echo "</tr>";
+                                            }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -141,6 +202,23 @@
         <script src="../../dist/js/adminlte.js"></script>
         <script src="../../dist/js/demo.js"></script>
         <script src="../../dist/js/pages/dashboard2.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('.btn-delete').on('click', function(){
+                $('#deletemodal').modal('show');  
+                
+                $tr = $(this).closest('tr');
+
+                var data = $tr.children("td").map(function(){
+                    return $(this).text();
+                }).get();
+
+                console.log(data);  
+                document.getElementById("delete_id").value = data[0];
+                });
+            });
+        </script>
     </body>
 </html>
 <?php 

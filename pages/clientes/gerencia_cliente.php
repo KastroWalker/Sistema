@@ -1,5 +1,6 @@
 <?php 
-    session_start();
+    include '../../Control/Cliente_Control.php';
+    $cliente = new Cliente_Control();
     if (isset($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
@@ -24,13 +25,13 @@
                         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="../index.php" class="nav-link">Home</a>
+                        <a href="../home.php" class="nav-link">Home</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">Sair</a>
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="../Control/Logout.php">Sair</a>
                     </li>
                 </ul>
             </nav>
@@ -90,6 +91,8 @@
                         </div>
                         <div class="card-body">
                             <form action="" method="POST">
+                                <input type="hidden" id="campo_id" name="id">
+
                                 <label for="campo_nome">Nome*</label>
                                 <div class="input-group mb-3">
                                     <input type="text" id="campo_nome" name="nome" class="form-control" placeholder="Nome" required>
@@ -108,7 +111,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                     </div>
-                                    <input type="tel" name="campo_telefone" id="telefone" onkeypress="formata_mascara(this, '## #####-####', event)" minlength="13" maxlength="13" class="frm_number_only form-control" placeholder="Telefone" required>
+                                    <input type="tel" name="telefone" id="campo_telefone" onkeypress="formata_mascara(this, '## #####-####', event)" minlength="13" maxlength="13" class="frm_number_only form-control" placeholder="Telefone" required>
                                 </div>
 
                                 <label for="campo_site">Site</label>
@@ -171,8 +174,13 @@
                                     </div>
                                 </div>
                                 <div class="buttons">
-                                    <button type="submit" class="btn btn-success">Cadastrar</button>
-                                    <button type="reset" class="btn btn-info">Limpar</button>
+                                    <?php if(isset($_GET['id'])){ ?>
+                                        <button class="btn btn-info" type="submit" id="btn-editar" name="btn-editar">Editar</button>
+                                    <?php }else{ ?>
+                                        <button class="btn btn-success" type="submit" id="btn-cadastrar" name="btn-cadastrar">Cadastrar</button>
+                                    <?php } ?>
+                                    
+                                    <button type="reset" class="btn btn-secondary">Limpar</button>
                                 </div>
                             </form>
                         </div>
@@ -195,6 +203,70 @@
         <script src="../../dist/js/adminlte.js"></script>
         <script src="../../dist/js/demo.js"></script>
         <script src="../../dist/js/pages/dashboard2.js"></script>
+        <script src="../../dist/js/pages/cep.js"></script>
+        <script src="../../dist/js/pages/cliente.js"></script>
+
+        <?php
+            if(isset($_GET['id'])){
+                $id = $_GET['id'];
+                $dados = $cliente->read($id);
+                
+                foreach ($dados as $d) {
+                    echo "<script>";
+                    echo "document.getElementById('campo_id').value = '".$d['id']."';";
+                    echo "document.getElementById('campo_nome').value = '".$d['nome']."';";
+                    echo "document.getElementById('campo_cpf').value = '".$d['cpf']."';";
+                    echo "document.getElementById('campo_email').value = '".$d['email']."';";
+                    echo "document.getElementById('rua').value = '".$d['endereco']."';";
+                    echo "document.getElementById('num').value = '".$d['numero']."';";
+                    echo "document.getElementById('bairro').value = '".$d['bairro']."';";
+                    echo "document.getElementById('cep').value = '".$d['cep']."';";
+                    echo "document.getElementById('cidade').value = '".$d['cidade']."';";
+                    echo "document.getElementById('uf').value = '".$d['uf']."';";
+                    echo "document.getElementById('campo_site').value = '".$d['site']."';";
+                    echo "document.getElementById('campo_telefone').value = '".$d['telefone']."';";
+                    echo "</script>";
+                }
+            }
+
+            if(isset($_POST['btn-cadastrar'])){
+                $nome = $_POST['nome'];
+                $email = $_POST['email'];
+                $cpf = $_POST['cpf'];
+                $cep = $_POST['cep'];
+                $endereco = $_POST['rua'];
+                $num = $_POST['num_casa'];
+                $bairro = $_POST['bairro'];
+                $cidade = $_POST['cidade'];
+                $uf = $_POST['uf'];
+                $telefone = $_POST['telefone'];
+                $site = $_POST['site'];
+
+                $cliente->create($nome, $email, $cpf, $endereco, $num, $bairro, $cidade, $cep, $uf, $telefone, $site);
+            }
+
+            if(isset($_POST['delete_id'])){
+                $id = $_POST['delete_id'];
+                $cliente->delete($id);
+            }
+
+            if(isset($_POST['btn-editar'])){
+                $id = $_POST['id'];
+                $nome = $_POST['nome'];
+                $email = $_POST['email'];
+                $cpf = $_POST['cpf'];
+                $cep = $_POST['cep'];
+                $endereco = $_POST['rua'];
+                $num = $_POST['num_casa'];
+                $bairro = $_POST['bairro'];
+                $cidade = $_POST['cidade'];
+                $uf = $_POST['uf'];
+                $telefone = $_POST['telefone'];
+                $site = $_POST['site'];
+
+                $cliente->edit($id, $nome, $email, $cpf, $endereco, $num, $bairro, $cidade, $cep, $uf, $telefone, $site);
+            }
+        ?>
     </body>
 </html>
 <?php 

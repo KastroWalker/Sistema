@@ -1,7 +1,7 @@
 <?php 
 	session_start();
-	include '../Model/Cliente_Model.php';
-	include '../DB/Conexao.php';
+	include '../../Model/Cliente_Model.php';
+	include '../../DB/Conexao.php';
 
 	class Cliente_Control {
 		private $data;
@@ -54,11 +54,11 @@
 				$data->execute();
 				$_SESSION['cliente_cadastrado'] = true;
 				echo "Cadastrado";
-				// echo "<script>window.location.href = 'clientes.php';</script>";
+				echo "<script>window.location.href = 'home_clientes.php';</script>";
 			} catch (PDOException $ex) {
 				echo "Erro ao cadastrar: ".$ex->getMessage();
 				$_SESSION['cliente_nao_cadastrado'] = true;
-				// echo "<script>window.location.href = 'clientes.php';</script>";
+				echo "<script>window.location.href = 'home_clientes.php';</script>";
 			}
 		}
 		
@@ -114,11 +114,11 @@
 				$data->execute();
 				$_SESSION['cliente_editado'] = true;
 				echo "editou";
-				// echo "<script>window.location.href = 'clientes.php';</script>";
+				echo "<script>window.location.href = 'home_clientes.php';</script>";
 			} catch (PDOException $ex) {
 				echo "Erro ao editar: ".$ex->getMessage();
-				// $_SESSION['cliente_nao_editado'] = true;
-				echo "<script>window.location.href = 'clientes.php';</script>";
+				$_SESSION['cliente_nao_editado'] = true;
+				echo "<script>window.location.href = 'home_clientes.php';</script>";
 			}
 		}
 		
@@ -134,12 +134,11 @@
 	        try {
 	            $data->execute();
 	            $_SESSION['cliente_apagado'] = true;
-				echo "apagou";
-				// echo "<script>window.location.href = 'clientes.php';</script>";
+				echo "<script>window.location.href = 'home_clientes.php';</script>";
 	        } catch (PDOException $ex) {
 	            echo "Erro ao apagar: " . $ex->getMessage();
 	            $_SESSION['cliente_nao_apagado'] = true;
-				// echo "<script>window.location.href = 'clientes.php';</script>";
+				echo "<script>window.location.href = 'home_clientes.php';</script>";
 	        }
 	    }
 	}
