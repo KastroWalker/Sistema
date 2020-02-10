@@ -1,5 +1,7 @@
 <?php 
-    session_start();
+    include '../../Control/Usuario_Control.php';
+    $user = new Usuario_Control();
+
     if (isset($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
@@ -112,8 +114,12 @@
                                 </div>
 
                                 <div class="buttons">
-                                    <button type="submit" class="btn btn-success">Cadastrar</button>
-                                    <button type="reset" class="btn btn-info">Limpar</button>
+                                    <?php if(isset($_GET['id'])){ ?>
+                                        <button class="btn btn-info" type="submit" id="btn-editar" name="btn-editar">Editar</button>
+                                    <?php }else{ ?>
+                                        <button class="btn btn-success" type="submit" id="btn-cadastrar" name="btn-cadastrar">Cadastrar</button>
+                                    <?php } ?>
+                                    <button type="reset" class="btn btn-secondary">Limpar</button>
                                 </div>
                             </form>
                         </div>
@@ -121,6 +127,15 @@
                                 <p><strong>Os Campos com * são obrigatório.</strong></p>
                             </div>
                         </div>
+                <?php 
+                    if(isset($_POST['btn-cadastrar'])){
+                        $nome = $_POST['nome'];
+                        $login = $_POST['user'];
+                        $senha = $_POST['senha'];
+            
+                        $user->create($nome, $login, $senha);
+                    }
+                 ?>
                     </div>
                 </section>
             </div>
