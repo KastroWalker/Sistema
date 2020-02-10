@@ -1,3 +1,7 @@
+<?php 
+    session_start();
+    if (isset($_SESSION['user_id'])) {
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -134,3 +138,8 @@
         <script src="../../dist/js/pages/dashboard2.js"></script>
     </body>
 </html>
+<?php 
+    }else{
+        header('Location: ../index.php');
+    }
+?>

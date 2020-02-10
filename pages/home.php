@@ -1,3 +1,7 @@
+<?php 
+    session_start();
+    if (isset($_SESSION['user_id'])) {
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -111,11 +115,16 @@
             </footer>
         </div>
 
-        <script src="../../plugins/jquery/jquery.min.js"></script>
-        <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-        <script src="../../dist/js/adminlte.js"></script>
-        <script src="../../dist/js/demo.js"></script>
-        <script src="../../dist/js/pages/dashboard2.js"></script>
+        <script src="../plugins/jquery/jquery.min.js"></script>
+        <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <script src="../dist/js/adminlte.js"></script>
+        <script src="../dist/js/demo.js"></script>
+        <script src="../dist/js/pages/dashboard2.js"></script>
     </body>
 </html>
+<?php 
+    }else{
+        header('Location: ../index.php');
+    }
+?>
